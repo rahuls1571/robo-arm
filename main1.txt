@@ -1,0 +1,400 @@
+package com.example.rahulsuthar.wifi;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
+
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+
+
+public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
+
+    //private static final android.R.attr R = ;
+    Button Grip,Wrist_Pitch,Wrist_Roll,Elbow,shoulder,base;
+    TextView textView;
+
+    static String MqttsHost = "tcp://m16.cloudmqtt.com:14573";
+    static String UserName = "iqycdzty";
+    static String Password = "lzJtQ3SC0DsV";
+    static String topicstr = "LED";
+    static String topicstr1 = "Motor";
+    MqttAndroidClient client;
+    MqttConnectOptions options;
+
+    String command;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        // declare variable ID.
+        textView =(TextView)findViewById(R.id.textView);
+        Grip =(Button)findViewById(R.id.Grip);
+        Wrist_Pitch =(Button)findViewById(R.id.Wrist_pitch);
+        Wrist_Roll =(Button)findViewById(R.id.Wrist_Roll);
+        Elbow =(Button)findViewById(R.id.Elbow);
+        shoulder=(Button)findViewById(R.id.shoulder);
+        base =(Button)findViewById(R.id.base);
+
+
+        //Touch button  for  b1,b0;
+
+        base.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) //MotionEvent.ACTION_DOWN is when you hold a button down
+                {
+
+                    try {
+                        String topic = topicstr1;
+                        String message = "B1";  //base
+
+                        client.publish(topic, message.getBytes(), 0, false);
+
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) //MotionEvent.ACTION_DOWN is when you hold a button down
+                {
+
+                    try {
+                        String topic = topicstr1;
+                        String message = "B0";
+
+                        client.publish(topic, message.getBytes(), 0, false);
+
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                return true;
+            }
+        });
+
+//Touch button  for  S1,S0;
+        shoulder.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) //MotionEvent.ACTION_DOWN is when you hold a button down
+                {
+
+                    try {
+                        String topic = topicstr1;
+                        String message = "S1"; // S1= shoulder
+
+                        client.publish(topic, message.getBytes(), 0, false);
+
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) //MotionEvent.ACTION_DOWN is when you hold a button down
+                {
+
+                    try {
+                        String topic = topicstr1;
+                        String message = "S0";
+
+                        client.publish(topic, message.getBytes(), 0, false);
+
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                return true;
+            }
+        });
+
+//Touch button  for  E1,E0;
+        Elbow.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) //MotionEvent.ACTION_DOWN is when you hold a button down
+                {
+
+                    try {
+                        String topic = topicstr1;
+                        String message = "E1";  //E1= Elbow
+
+                        client.publish(topic, message.getBytes(), 0, false);
+
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) //MotionEvent.ACTION_DOWN is when you hold a button down
+                {
+
+                    try {
+                        String topic = topicstr1;
+                        String message = "E0";
+
+                        client.publish(topic, message.getBytes(), 0, false);
+
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                return true;
+            }
+        });
+
+
+//Touch button  for  R1,R0;
+        Wrist_Roll.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) //MotionEvent.ACTION_DOWN is when you hold a button down
+                {
+
+                    try {
+                        String topic = topicstr1;
+                        String message = "R1";  //R1= Wrist_Roll
+
+                        client.publish(topic, message.getBytes(), 0, false);
+
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) //MotionEvent.ACTION_DOWN is when you hold a button down
+                {
+
+                    try {
+                        String topic = topicstr1;
+                        String message = "R0";
+
+                        client.publish(topic, message.getBytes(), 0, false);
+
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                return true;
+            }
+        });
+
+
+
+//Touch button  for  P1,P0;
+        // ON touch
+        Wrist_Pitch.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) //MotionEvent.ACTION_DOWN is when you hold a button down
+                {
+
+                    try {
+                        String topic = topicstr1;
+                        String message = "P1"; // p1= Wrist_pitch
+
+                        client.publish(topic, message.getBytes(), 0, false);
+
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) //MotionEvent.ACTION_DOWN is when you hold a button down
+                {
+
+                    try {
+                        String topic = topicstr1;
+                        String message = "P0";
+
+                        client.publish(topic, message.getBytes(), 0, false);
+
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                return true;
+            }
+        });
+
+
+//Touch button  for  G1,G0;
+        Grip.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) //MotionEvent.ACTION_DOWN is when you hold a button down
+                {
+
+                    try {
+                        String topic = topicstr1;
+                        String message = "G1"; // G1 Grip
+
+                        client.publish(topic, message.getBytes(), 0, false);
+
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) //MotionEvent.ACTION_DOWN is when you hold a button down
+                {
+
+                    try {
+                        String topic = topicstr1;
+                        String message = "G0";
+
+                        client.publish(topic, message.getBytes(), 0, false);
+
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                return true;
+            }
+        });
+
+
+        // connect to mqtt server
+        String clientId = MqttClient.generateClientId();
+        client = new MqttAndroidClient(this.getApplicationContext(), MqttsHost, clientId);
+        options = new MqttConnectOptions();
+        options.setUserName(UserName);
+        options.setPassword(Password.toCharArray());
+
+        try {
+            IMqttToken token = client.connect(options);
+            token.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    // We are connected
+
+                    Toast.makeText(MainActivity.this, "connected", Toast.LENGTH_SHORT).show();
+
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    // Something went wrong e.g. connection timeout or firewall problems
+                    Toast.makeText(MainActivity.this, "connected failure", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // node mcu pin D0
+    public void D0(View v) {
+
+
+        boolean check = ((ToggleButton) v).isChecked();
+        if (check) {
+            String topic = topicstr;
+            String message = "L1";
+
+            try {   //publish mean send message to mqtt
+                client.publish(topic, message.getBytes(), 0, false);
+                Toast.makeText(MainActivity.this, " D0 Pin ON", Toast.LENGTH_SHORT).show();
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            String topic = topicstr;
+            String message = "D1";
+
+            try {
+                client.publish(topic, message.getBytes(), 0, false);
+                Toast.makeText(MainActivity.this, "D0 Pin OFF", Toast.LENGTH_SHORT).show();
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+
+    //nodemcu pin D1
+    public void D1(View v) {
+        boolean check = ((ToggleButton) v).isChecked();
+        if (check) {
+            String topic = topicstr;
+            String message = "L2";
+
+            try {
+                client.publish(topic, message.getBytes(), 0, false);
+                Toast.makeText(MainActivity.this, "D1 pin ON", Toast.LENGTH_SHORT).show();
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            String topic = topicstr;
+            String message = "D2";
+
+            try {
+                client.publish(topic, message.getBytes(), 0, false);
+
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+    }
+
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+//      seekBar.setMax(0);
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        //  seekBar.setMax(180);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

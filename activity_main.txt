@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.rahulsuthar.wifi.MainActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+   android:background="@drawable/rv2"
+    android:weightSum="1">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp">
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
+            android:text="IIOT"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <ToggleButton
+            android:id="@+id/D0_pin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="65dp"
+            android:onClick="D0"
+            android:textOff="D0 OFF"
+            android:textOn="D0 ON" />
+
+
+        <ToggleButton
+            android:id="@+id/D1_pin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:onClick="D1"
+            android:textOff="D1 OFF"
+            android:textOn="D1 ON" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="314dp"
+        android:layout_height="315dp"
+
+        android:layout_marginLeft="215dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+
+        >
+        <Button
+            android:id="@+id/Grip"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+
+            android:layout_marginTop="5dp"
+            android:onClick="Grip"
+            android:text="Grip"
+            android:textStyle="bold" />
+
+
+        <Button
+            android:id="@+id/Wrist_pitch"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+
+            android:layout_marginTop="5dp"
+            android:onClick="Wrist_pitch"
+            android:text="Wrist_pitch"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/Wrist_Roll"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+
+            android:layout_marginTop="5dp"
+            android:onClick="Wrist_Roll"
+            android:text="Wrist_Roll"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/Elbow"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:onClick="Elbow"
+            android:text="Elbow"
+            android:textStyle="bold" />
+
+
+        <Button
+            android:id="@+id/shoulder"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+
+            android:layout_marginTop="5dp"
+            android:onClick="shoulder"
+            android:text="Shoulder"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/base"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+
+            android:layout_marginTop="5dp"
+            android:onClick="base"
+            android:text="Base"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
+
+

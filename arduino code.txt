@@ -1,0 +1,191 @@
+#include <PubSubClient.h>
+#include <ESP8266WiFi.h>
+#include <String.h>
+
+// connection  to Mqtt Server
+const  char* mqttServer ="m16.cloudmqtt.com"; 
+const   int  mqttPort = 14573;
+const  char* mqtt_user ="iqycdzty";
+const  char* mqtt_password ="lzJtQ3SC0DsV";
+
+
+WiFiClient espclient;
+PubSubClient client (espclient);
+
+
+int  motor1=0;   // D3
+int  motor2=2;   // D4
+
+int  motor3=13;  // D0
+int  motor4=15;  // D1
+
+
+int motor5=16;  // D0 
+int motor6=5;   //D1
+
+int motor7=10;  //SD3
+int motor8=9;   //SD2   
+
+
+char message_buff[100];
+int en1=14;      // D5
+int en2=12;      // D6
+
+void mqtt_call_back(char* topic, byte* dados_top, unsigned int length);
+ // boolean publish(const char* topic, const uint8_t * payload, unsigned int plength, boolean retained);
+
+void setup() {
+
+ pinMode(en1,OUTPUT);   
+ pinMode(en2,OUTPUT);
+
+ pinMode(motor1,OUTPUT);
+ pinMode(motor2,OUTPUT);
+
+ pinMode(motor3,OUTPUT);
+ pinMode(motor4,OUTPUT);
+ 
+ 
+ digitalWrite(en1,HIGH);
+ digitalWrite(en2,HIGH);
+ 
+Serial.begin(9600);
+// wifi connection
+WiFi.begin("Rahul","dksuthar");
+  while(WiFi.status()!=WL_CONNECTED){
+      delay(100);
+      Serial.println("connecting to wifi:");     
+  }
+  
+Serial.println("wifi connected");
+// mqtt Server connection
+client.setServer(mqttServer, mqttPort);
+client.setCallback(callback);
+
+while(!client.connected()){
+      Serial.println("connecting to mqtt server...");
+  
+    if (client.connect("HOME control",mqtt_user, mqtt_password )) { 
+      Serial.println("connected to server mqtt" );  
+    } else { 
+      Serial.print("false to connect");
+      Serial.print(client.state());
+      delay(2000); 
+    }
+} 
+// Read data form the mqtt server
+client.subscribe("LED"); // for nodemcu led. 
+client.subscribe("Motor");   // for motor control.
+ // send data form nodemcu  to mqtt server using  client.publish(""); 
+ 
+ }
+
+
+
+
+void callback(char* topic, byte* payload, unsigned int length) {
+
+  int i = 0;
+  // create character buffer with ending null terminator (string)
+  for(i=0; i<length; i++) 
+  {
+    message_buff[i] = (char)payload[i];
+  }
+    message_buff[i] = '\0';
+
+// read data form mqtt 
+  
+  String msgString = String(message_buff);
+  Serial.println(msgString);  
+// motor1
+    if (msgString.equals("G1"))  //clim
+     {
+       
+      digitalWrite(motor1,HIGH);
+      digitalWrite(motor2,LOW);
+      Serial.println("Motor1 start on");
+   
+     }
+     
+   if (msgString.equals("G0"))  //clim
+     {
+      digitalWrite(motor1,LOW);
+      digitalWrite(motor2,LOW);
+      Serial.println("motor1 Off");
+     }
+  
+// motor 2
+
+    if (msgString.equals("P1"))  //clim
+     {
+        //open mouth
+       digitalWrite(motor1,LOW);
+       digitalWrite(motor2,HIGH);
+      
+       Serial.println("Motor2 start on");
+         
+     }
+     
+    if (msgString.equals("P0"))  //clim
+     { // close mouth
+      digitalWrite(motor1,LOW);
+      digitalWrite(motor2,LOW);
+      
+     Serial.println("motor2 off");
+     }
+  
+     // led on
+  if (msgString.equals("S1"))  //clim
+     { // led on 
+      digitalWrite(motor3,HIGH);
+      digitalWrite(motor4,LOW);
+     Serial.println("Motor 2 on forward");
+     }
+  
+if(msgString.equals("S0")){
+  
+  
+      digitalWrite(motor3,LOW);
+      digitalWrite(motor4,LOW);
+      //Serial.println("led off");
+ }
+
+
+  
+if(msgString.equals("E1")){
+   
+      digitalWrite(motor3,LOW);
+      digitalWrite(motor4,HIGH);
+      Serial.println("motor 2 backward");
+ }
+
+  
+if(msgString.equals("E0")){
+   
+      digitalWrite(motor3,LOW);
+      digitalWrite(motor4,LOW);
+     // Serial.println(" motor 2 off");
+ }
+
+if(msgString.equals("B1")){
+   
+      digitalWrite(motor5,HIGH);
+      digitalWrite(motor4,LOW);
+     // Serial.println(" motor 2 off");
+ }
+
+if(msgString.equals("B0")){
+   
+      digitalWrite(motor5,LOW);
+      digitalWrite(motor4,LOW);
+     // Serial.println(" motor 2 off");
+ }
+
+
+
+ 
+}
+
+void loop() {
+ client.loop();  
+  }
